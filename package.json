@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "task1": "nodemon task1.js",
-    "task2": "nodemon task2.js",
-    "task3": "nodemon task3.js",
+    "task1": "cd ./task1 && npm run start",
+    "task2": "cd ./task2 && npm run start",
+    "task3": "cd ./task3 && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

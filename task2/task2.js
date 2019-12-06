@@ -62,8 +62,16 @@ const converToJson = (filePath, processedPath) => {
         txtData = JSON.stringify(data);
       }
 
-      file.write(txtData + "\n");
-  })
+      file.write(txtData + '\n');
+    })
+    .on('done', (err) => {
+      if (err) {
+        console.log('Error', err);
+        return;
+      }
+
+      console.log('File created successfully');
+    });
 }
 
 watcher.on('process', (file) => {
