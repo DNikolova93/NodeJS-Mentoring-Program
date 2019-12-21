@@ -1,8 +1,9 @@
-const http = require('http');
+import { createServer } from 'http';
 
-http.createServer((request, response) => {
+createServer((request, response) => {
+  console.log(request);
   const { headers, method, url } = request;
-  let body = [];
+  let body: any;
   request.on('error', err => {
     console.log(err);
   }).on('data', chunk => {
