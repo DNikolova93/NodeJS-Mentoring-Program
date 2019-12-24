@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.t  s",
   "scripts": {
-    "start": "node index.ts --exec babel-node",
-    "start:watch": "nodemon index.ts",
-    "build": "tsc && npm run lint",
+    "start": "node run serve",
+    "serve-debug": "nodemon ./src/server.ts",
+    "serve": "node dist/server.js --exec babel-node",
+    "watch": "nodemon index.ts",
+    "build": "npm run build-ts && npm run lint",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
     "clean": "rimraf ./dist",
     "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint -c tslint.json '*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*'",
     "tsc": "tsc --init"
   },
   "keywords": [],
@@ -24,6 +28,9 @@
     "@babel/preset-stage-2": "^7.0.0",
     "@babel/preset-typescript": "^7.7.7",
     "@babel/register": "^7.0.0",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.2",
+    "@types/hapi__joi": "^16.0.4",
     "@types/node": "^12.12.20",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -35,6 +42,12 @@
     "typescript-eslint-parser": "^22.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.7"
+    "@babel/runtime": "^7.7.7",
+    "@hapi/joi": "^16.1.8",
+    "@types/uuid": "^3.4.6",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-joi-validation": "^4.0.3",
+    "uuid": "^3.3.3"
   }
 }
