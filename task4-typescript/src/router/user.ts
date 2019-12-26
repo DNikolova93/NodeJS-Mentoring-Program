@@ -1,12 +1,19 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
+import validatorConfigApp from '../config/validatorConfig';
 import UserController from '../controllers/user';
+import { RequestType } from '../types/requestType';
+import { schemas } from '../types/schemas';
+
 const router = Router();
 
-const attach = (app: Express, controllerFactory: UserController) => {
-  const controller = controllerFactory;
+const attach = (
+  app: Express,
+  userControllerFactory: UserController) => {
+  const controller = userControllerFactory;
+  const validator = validatorConfigApp;
 
-  app.get('/404', (req, res) => {
+  app.get('/404', (req: Request, res: Response) => {
     res.send('THE PAGE YOUR ARE LOOKIGN FOR DOES NOT EXIST');
   });
 
@@ -16,7 +23,7 @@ const attach = (app: Express, controllerFactory: UserController) => {
   });
 
   router.route('')
-    .post((req: Request, res: Response, next: NextFunction) => {
+    .post(validator(schemas.user, RequestType.Body), (req: Request, res: Response, next: NextFunction) => {
       controller.create(req, res, next);
   });
 
@@ -25,7 +32,7 @@ const attach = (app: Express, controllerFactory: UserController) => {
       const queries = req.query;
 
       (queries['loginSubstring'] && queries['limit'])
-        ? controllerFactory.getSuggestUsers(req, res, next)
+        ? controller.getSuggestUsers(req, res, next)
         : controller.getAllUsers(req, res, next);
   });
 
@@ -35,13 +42,13 @@ const attach = (app: Express, controllerFactory: UserController) => {
   });
 
   router.route('/update/:id')
-    .put((req: Request, res: Response, next: NextFunction) => {
-      controllerFactory.updateUser(req, res, next);
+    .put(validator(schemas.user, RequestType.Body), (req: Request, res: Response, next: NextFunction) => {
+      controller.updateUser(req, res, next);
   });
 
   app.use('/api/users', router);
 
-  app.get('*', (req, res) => {
+  app.get('*', (req: Request, res: Response) => {
     res.redirect('/404');
   });
 };

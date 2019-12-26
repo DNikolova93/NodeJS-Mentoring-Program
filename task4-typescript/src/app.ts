@@ -1,17 +1,18 @@
 import express from 'express';
 import { Server } from 'http';
-import configApp from './config/config';
+import configApp from './config/baseConfig';
+import UserController from './controllers/user';
 import attach from './router/user';
 
-export const init = async (controllerFactory: any): Promise<Server> => {
+export const init = async (controllerFactory: UserController): Promise<Server> => {
   const http = await import('http');
 
   const app = express();
   const server = http.createServer(app);
 
-  // routers
   configApp(app);
 
+  // routers
   attach(app, controllerFactory);
 
   return Promise.resolve(server);
