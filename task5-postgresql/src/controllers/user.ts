@@ -1,17 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import Storage from '../storage/userStorage';
 
 export default class UserController {
-  storage: Storage;
-  constructor(storage: Storage) {
-    this.storage = storage;
+  public data: any;
+  constructor(data: any) {
+    this.data = data.user;
   }
 
   async getUser(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
 
     try {
-      const user = await this.storage.get(userId);
+      const user = await this.data.get(userId);
 
       if (!user) {
         return res.status(404).send(`A user with the specified ID ${userId} was not found`);
@@ -26,7 +25,7 @@ export default class UserController {
     const user = req.body;
 
     try {
-      const newUser = await this.storage.createUser(user);
+      const newUser = await this.data.createUser(user);
 
       return res.json(newUser);
     } catch (e) {
@@ -36,7 +35,7 @@ export default class UserController {
 
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await this.storage.getAll();
+      const users = await this.data.getAll();
 
       return res.json(users);
     } catch (e) {
@@ -48,7 +47,7 @@ export default class UserController {
     const { loginSubstring, limit } = req.query;
 
     try {
-      const users = await this.storage.getAutoSuggestUsers(loginSubstring, limit);
+      const users = await this.data.getAutoSuggestUsers(loginSubstring, limit);
 
       return res.json(users);
     } catch (e) {
@@ -60,7 +59,7 @@ export default class UserController {
     const userId = req.params.id;
 
     try {
-      const message = await this.storage.removeUser(userId);
+      const message = await this.data.removeUser(userId);
 
       return res.json(message);
     } catch (e) {
@@ -73,7 +72,7 @@ export default class UserController {
     const data = req.body;
 
     try {
-      const user = await this.storage.updateById(userId, data);
+      const user = await this.data.updateById(userId, data);
 
       return res.json(user);
     } catch (e) {

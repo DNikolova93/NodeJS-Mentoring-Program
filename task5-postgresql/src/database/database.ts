@@ -1,8 +1,8 @@
-import { Pool, PoolConfig } from 'pg';
+import { Options, Sequelize } from 'sequelize';
 
-const init = (postgresConfig: PoolConfig) => {
-  const client = new Pool(postgresConfig);
-  return client.connect();
+const init = (connectionConfig: Options) => {
+  const sequelize = new Sequelize(connectionConfig);
+  return sequelize;
 };
 
 export { init };

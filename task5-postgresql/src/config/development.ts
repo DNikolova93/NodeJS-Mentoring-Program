@@ -1,10 +1,11 @@
-export default {
+export const development = {
   seed: true,
   connectionOptions: {
-    user: 'postgres',
+    username: 'postgres',
     password: 'postgres',
     host: 'localhost',
     port: 5432,
     database: 'postgres',
+    dialect: 'postgres',
   },
 };

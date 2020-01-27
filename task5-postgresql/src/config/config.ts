@@ -19,10 +19,10 @@ let envConfig;
 
 try {
     // tslint:disable-next-line:no-var-requires
-    envConfig = require('./' + config.env);
+    envConfig = require('./' + config.env)[config.env];
     envConfig = envConfig || {};
 } catch (error) {
     envConfig = {};
 }
 
-export default merge(config, envConfig);
+export const CONFIG = merge(config, envConfig);

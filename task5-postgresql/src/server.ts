@@ -1,63 +1,22 @@
-// import { init } from './app';
-// import UserController from './controllers/user';
-// import Storage from './storage/userStorage';
 
-// const port = process.env.PORT || 3000;
+import { init as appInit } from './app';
+import CONFIG from './config';
+import UserController from './controllers/user';
+import { init as dataAccessInit } from './data-access';
+import { init as databaseInit } from './database';
+import { init as modelsInit } from './models';
 
-// const run = async () => {
-//   const storage = new Storage();
-//   const userController = new UserController(storage);
+const run = async () => {
+  const sequelize = databaseInit(CONFIG.connectionOptions);
+  await databaseInit(CONFIG.connectionOptions).authenticate();
 
-//   const data = await init(userController);
-//   data.listen(port, () => console.log('Server started and listening on port ' + port));
-// };
+  const models = await modelsInit(sequelize);
+  const dataAccess = await dataAccessInit(sequelize, models);
 
-// run();
+  const userController = new UserController(dataAccess);
+  const app = await appInit(userController);
 
-import { Client, Pool } from 'pg';
-import { Sequelize } from 'sequelize';
+  app.listen(CONFIG.port, () => console.log('Server started and listening on port ' + CONFIG.port));
+};
 
-
-const client = new Pool({
-  user: 'postgres',
-  password: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  database: 'postgres',
-});
-
-const sequelize = new Sequelize({
-  host: 'localhost',
-  port: 5432,
-  database: 'postgres',
-  dialect: 'postgres',
-  username: 'postgres',
-  password: 'postgres',
-});
-
-sequelize.authenticate().then(() => {
-  console.log('Sucessfuly created');
-});
-
-client.connect()
-  .then(() => {
-    console.log('Connected successfully');
-  })
-  .then(() => {
-    const queryText =
-    `CREATE TABLE IF NOT EXISTS
-      users(
-        id UUID PRIMARY KEY NOT NULL,
-        login text NOT NULL,
-        password VARCHAR(130) NOT NULL,
-        age integer NOT NULL,
-        isDeleted bool NOT NULL
-      )`;
-
-    client.query(queryText);
-  })
-  .then(() => sequelize.query('SELECT * FROM users'))
-  .then(data => console.log(data))
-  .catch((err: any) => {
-    console.log(err);
-  }).finally(() => client.end());
+run();
