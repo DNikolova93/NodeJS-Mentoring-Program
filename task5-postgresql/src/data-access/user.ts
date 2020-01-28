@@ -10,23 +10,11 @@ export class UserData {
   }
 
   async getAll(): Promise<{length: number, items: User[]}> {
-
-    // filter by isDeleted property
-    return this.ModelClass.findAll({ where: { isDeleted: false } });
+    return await this.ModelClass.findAll({ where: { isDeleted: false } });
   }
 
   async get(id: string): Promise<User | undefined> {
-    // const user = this.getUserById(id);
-
-    // return new Promise((resolve, reject) => {
-    //   if (!user || user.isDeleted) {
-    //     reject('User not found');
-    //   }
-
-    //   resolve(user);
-    // });
-
-    return this.ModelClass.findByPk(id);
+    return await this.ModelClass.findOne({ where: { id, isDeleted: false }});
   }
 
   // getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<User[] | string> {
@@ -49,62 +37,31 @@ export class UserData {
 
   // }
 
-  // getUserById(id: string): User | undefined {
-  //   return this.data.find(data => data.id === id);
-  // }
+  async updateById(id: string, data: User): Promise<User | string> {
+    const user = await this.get(id);
 
-  // async updateById(id: string, data: User): Promise<User | string> {
-  //   let user = await this.get(id) as User;
+    if (!user) {
+      throw new Error(`No user was found with ID ${id}`);
+    }
 
-  //   if (!user) {
-  //     throw new Error(`No user was found with ID ${id}`);
-  //   }
-
-  //   user = { ...user, ...data };
-
-  //   return user.save();
-  // }
+    return await this.ModelClass.update({ ...data }, { where: { id }});
+  }
 
   async createUser(user: User): Promise<string | User> {
-    console.log(user);
     user.isDeleted = false;
     const newUser = new this.ModelClass(user);
-    console.log('new user', newUser);
     return await newUser.save();
   }
 
   async removeUser(id: string): Promise<string> {
     const user = await this.get(id);
 
-    if (!user)  {
+    if (!user) {
       throw new Error(`No user was found with ID ${id}`);
     }
 
-    user.isDeleted = true;
-
-    const updatedUser = new this.ModelClass(user);
-
-    return updatedUser.save();
+    return await this.ModelClass.update({ isDeleted: true }, { where: { id }});
   }
-
-  // isUserValid(user: User) {
-  //   const { login, password, age } = user;
-
-  //   if (typeof login === 'undefined' || login === null ||
-  //       typeof password === 'undefined' || password === null ||
-  //       typeof age === 'undefined' || age === null
-  //    ) {
-  //       return false;
-  //    }
-
-  //   if (login.length === 0 || password.length === 0 || age <= 0) {
-  //      return false;
-  //    }
-
-  //   console.log('PASSED');
-
-  //   return true;
-  // }
 
   compare(a: string, b: string): number {
     return a.toLowerCase() > b.toLowerCase() ? 1 : b.toLowerCase() > a.toLowerCase() ? -1 : 0;

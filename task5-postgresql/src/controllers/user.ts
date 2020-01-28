@@ -29,7 +29,6 @@ export default class UserController {
 
       return res.json(newUser);
     } catch (e) {
-      console.log('error', e);
       return res.status(404).send('User information is missing or invalid');
     }
   }
