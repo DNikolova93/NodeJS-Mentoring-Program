@@ -29,6 +29,7 @@ export default class UserController {
 
       return res.json(newUser);
     } catch (e) {
+      console.log('error', e);
       return res.status(404).send('User information is missing or invalid');
     }
   }
@@ -63,6 +64,7 @@ export default class UserController {
 
       return res.json(message);
     } catch (e) {
+      console.log(e);
       return res.status(500).send(`Fail`);
     }
   }

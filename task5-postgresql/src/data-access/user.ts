@@ -1,9 +1,9 @@
 import { Sequelize } from 'sequelize';
-import { User } from '../types/user';
+import { User, UserStatic } from '../types/user';
 
 export class UserData {
   public db: Sequelize;
-  public ModelClass: any;
+  public ModelClass: UserStatic;
   constructor(db: Sequelize, ModelClass: any) {
     this.db = db;
     this.ModelClass = ModelClass.User;
@@ -12,10 +12,10 @@ export class UserData {
   async getAll(): Promise<{length: number, items: User[]}> {
 
     // filter by isDeleted property
-    return this.ModelClass.findAll({ where: {} });
+    return this.ModelClass.findAll({ where: { isDeleted: false } });
   }
 
-  async get(id: string): Promise<User | string> {
+  async get(id: string): Promise<User | undefined> {
     // const user = this.getUserById(id);
 
     // return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ export class UserData {
     //   resolve(user);
     // });
 
-    return this.ModelClass.findOne({ id });
+    return this.ModelClass.findByPk(id);
   }
 
   // getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<User[] | string> {
@@ -66,20 +66,26 @@ export class UserData {
   // }
 
   async createUser(user: User): Promise<string | User> {
-    console.log('user', user);
+    console.log(user);
+    user.isDeleted = false;
     const newUser = new this.ModelClass(user);
-    return newUser.save();
+    console.log('new user', newUser);
+    return await newUser.save();
   }
 
-  // removeUser(id: string): Promise<string> {
-  //   const user = this.getUserById(id);
+  async removeUser(id: string): Promise<string> {
+    const user = await this.get(id);
 
-  //   return new Promise((resolve, reject) => {
-  //     !user ? reject('User not found') : user.isDeleted = true;
+    if (!user)  {
+      throw new Error(`No user was found with ID ${id}`);
+    }
 
-  //     resolve('Success');
-  //   });
-  // }
+    user.isDeleted = true;
+
+    const updatedUser = new this.ModelClass(user);
+
+    return updatedUser.save();
+  }
 
   // isUserValid(user: User) {
   //   const { login, password, age } = user;

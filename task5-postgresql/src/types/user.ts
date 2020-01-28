@@ -1,7 +1,8 @@
 import { ValidatedRequestSchema } from 'express-joi-validation';
+import { BuildOptions, Model} from 'sequelize/types';
 
 export type User = {
-  id: string;
+  readonly id: string;
   login: string;
   password: string;
   age: number;
@@ -9,3 +10,5 @@ export type User = {
 };
 
 export type UserRequest = User & ValidatedRequestSchema;
+
+export type UserStatic = typeof Model & (new (values?: object, options?: BuildOptions | undefined) => User);

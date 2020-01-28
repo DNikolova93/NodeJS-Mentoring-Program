@@ -8,7 +8,13 @@ import { init as modelsInit } from './models';
 
 const run = async () => {
   const sequelize = databaseInit(CONFIG.connectionOptions);
-  await databaseInit(CONFIG.connectionOptions).authenticate();
+
+  try {
+    await databaseInit(CONFIG.connectionOptions).authenticate();
+    console.log('Connection has been estabilished successfully');
+  } catch (err) {
+    console.error('Unable to connect to the database: ', err);
+  }
 
   const models = await modelsInit(sequelize);
   const dataAccess = await dataAccessInit(sequelize, models);
