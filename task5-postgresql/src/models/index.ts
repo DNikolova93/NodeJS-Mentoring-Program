@@ -24,6 +24,5 @@ export const init = (sequelize: Sequelize) => {
   db.sequelize = sequelize;
   db.Sequelize = Sequelize;
 
-
   return db;
 };

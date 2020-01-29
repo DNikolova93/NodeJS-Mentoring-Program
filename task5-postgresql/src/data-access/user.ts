@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import { User, UserStatic } from '../types/user';
 
 export class UserData {
@@ -9,35 +9,32 @@ export class UserData {
     this.ModelClass = ModelClass.User;
   }
 
-  async getAll(): Promise<{length: number, items: User[]}> {
+  async getAll(): Promise<any> {
     return await this.ModelClass.findAll({ where: { isDeleted: false } });
   }
 
-  async get(id: string): Promise<User | undefined> {
+  async get(id: string): Promise<any> {
     return await this.ModelClass.findOne({ where: { id, isDeleted: false }});
   }
 
-  // getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<User[] | string> {
-  //   const items = this.data.filter(x => !x.isDeleted);
-  //   if (!limit || limit < 0 || limit > items.length) {
-  //     limit = items.length;
-  //   }
+  async getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<any> {
+    const items = await this.getAll();
+    if (!limit || limit < 0 || limit > items.length) {
+      limit = items.length;
+    }
 
-  //   // tslint:disable-next-line:no-shadowed-variable
-  //   return new Promise((resolve, reject) => {
-  //     const sortUser = this.data.sort((a, b) => this.compare(a.login, b.login));
-  //     const list = sortUser.filter(x => x.login.includes(loginSubstring) && !x.isDeleted).slice(0, limit);
+    return await this.ModelClass.findAll({ limit,
+      where: {
+        isDeleted: false,
+        login: {
+          [Op.substring]: loginSubstring,
+        },
+      },
+      order: Sequelize.col('login'),
+    });
+  }
 
-  //     if (!list.length) {
-  //       reject('Users not found');
-  //     }
-
-  //     resolve(list);
-  //   });
-
-  // }
-
-  async updateById(id: string, data: User): Promise<User | string> {
+  async updateById(id: string, data: User): Promise<any> {
     const user = await this.get(id);
 
     if (!user) {
@@ -47,13 +44,13 @@ export class UserData {
     return await this.ModelClass.update({ ...data }, { where: { id }});
   }
 
-  async createUser(user: User): Promise<string | User> {
+  async createUser(user: User): Promise<any> {
     user.isDeleted = false;
     const newUser = new this.ModelClass(user);
     return await newUser.save();
   }
 
-  async removeUser(id: string): Promise<string> {
+  async removeUser(id: string): Promise<any> {
     const user = await this.get(id);
 
     if (!user) {
@@ -61,9 +58,5 @@ export class UserData {
     }
 
     return await this.ModelClass.update({ isDeleted: true }, { where: { id }});
-  }
-
-  compare(a: string, b: string): number {
-    return a.toLowerCase() > b.toLowerCase() ? 1 : b.toLowerCase() > a.toLowerCase() ? -1 : 0;
   }
 }

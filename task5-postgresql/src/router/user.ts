@@ -1,6 +1,6 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
-import validatorConfigApp from '../config/validatorConfig';
+import validatorConfigApp from '../app_config/validatorConfig';
 import UserController from '../controllers/user';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';

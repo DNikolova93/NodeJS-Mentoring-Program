@@ -1,6 +1,6 @@
 import express from 'express';
 import { Server } from 'http';
-import configApp from './config/baseConfig';
+import configApp from './app_config/baseConfig';
 import UserController from './controllers/user';
 import attach from './router/user';
 

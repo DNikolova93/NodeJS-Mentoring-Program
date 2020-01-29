@@ -4,10 +4,6 @@ const config = {
     dev: 'development',
     prod: 'production',
     port: process.env.PORT || 3001,
-    cookie: {
-        secret: process.env.COOKIE_SECRET || 'Very Secret Much WoW',
-        expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    },
     env: '',
 };
 
@@ -24,5 +20,11 @@ try {
 } catch (error) {
     envConfig = {};
 }
+
+export const development = envConfig.connectionOptions;
+
+export const test = envConfig.connectionOptions;
+
+export const production = envConfig.connectionOptions;
 
 export const CONFIG = merge(config, envConfig);
