@@ -1,21 +1,16 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
 import validatorConfigApp from '../app_config/validatorConfig';
-import UserController from '../controllers/user';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';
 
 const router = Router();
 
-const attach = (
+export const attach = (
   app: Express,
-  userControllerFactory: UserController) => {
-  const controller = userControllerFactory;
+  controllersFactory: any) => {
+  const controller = controllersFactory.getUserController();
   const validator = validatorConfigApp;
-
-  app.get('/404', (req: Request, res: Response) => {
-    res.send('THE PAGE YOUR ARE LOOKIGN FOR DOES NOT EXIST');
-  });
 
   router.route('/:id')
     .get((req: Request, res: Response, next: NextFunction) => {
@@ -37,7 +32,7 @@ const attach = (
   });
 
   router.route('/delete/:id')
-    .delete((req, res, next) => {
+    .delete((req: Request, res: Response, next: NextFunction) => {
       controller.removeUser(req, res, next);
   });
 
@@ -47,10 +42,4 @@ const attach = (
   });
 
   app.use('/api/users', router);
-
-  app.get('*', (req: Request, res: Response) => {
-    res.redirect('/404');
-  });
 };
-
-export default attach;

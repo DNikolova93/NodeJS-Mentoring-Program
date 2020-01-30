@@ -22,9 +22,8 @@ const run = async () => {
   const models = await modelsInit(sequelize);
   const dataAccess = await dataAccessInit(sequelize, models);
 
-  const controllersFactory = new ControllersFactory(controllers, dataAccessInit, logger);
+  const controllersFactory = new ControllersFactory(controllers, dataAccess, logger);
 
-  // const userController = new UserController(dataAccess);
   const app = await appInit(controllersFactory);
 
   app.listen(CONFIG.port, () => console.log('Server started and listening on port ' + CONFIG.port));

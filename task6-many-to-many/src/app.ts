@@ -1,7 +1,7 @@
 import express from 'express';
 import { Server } from 'http';
 import configApp from './app_config/baseConfig';
-import attach from './router/user';
+import { attachTo } from './router';
 
 export const init = async (controllerFactory: any): Promise<Server> => {
   const http = await import('http');
@@ -12,7 +12,7 @@ export const init = async (controllerFactory: any): Promise<Server> => {
   configApp(app);
 
   // routers
-  attach(app, controllerFactory);
+  attachTo(app, controllerFactory);
 
   return Promise.resolve(server);
 };

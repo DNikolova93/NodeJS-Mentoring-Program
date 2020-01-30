@@ -10,12 +10,12 @@ export default class GroupController {
     const groupId = req.params.id;
 
     try {
-      const user = await this.data.get(groupId);
+      const group = await this.data.get(groupId);
 
-      if (!user) {
+      if (!group) {
         return res.status(404).send(`A group with the specified ID ${groupId} was not found`);
       }
-      return res.json(user);
+      return res.json(group);
     } catch (e) {
       return res.status(404).send(`A group with the specified ID ${groupId} was not found`);
     }
@@ -29,11 +29,12 @@ export default class GroupController {
 
       return res.json(newGroup);
     } catch (e) {
-      return res.status(404).send('User information is missing or invalid');
+      return res.status(404).send('Group information is missing or invalid');
     }
   }
 
   async getAllGroups(req: Request, res: Response, next: NextFunction) {
+    console.log(this.data);
     try {
       const groups = await this.data.getAll();
 
@@ -61,11 +62,11 @@ export default class GroupController {
     const data = req.body;
 
     try {
-      const user = await this.data.updateById(groupId, data);
+      const group = await this.data.updateById(groupId, data);
 
-      return res.json(user);
+      return res.json(group);
     } catch (e) {
-      res.status(404).send(`A user with the specified ID ${groupId} was not found`);
+      res.status(404).send(`A group with the specified ID ${groupId} was not found`);
     }
   }
 }
