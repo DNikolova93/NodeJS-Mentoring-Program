@@ -1,7 +1,7 @@
 export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
 import { BuildOptions, Model } from 'sequelize/types';
 
-export type User = {
+export type Group = {
   readonly id: string;
   name: string;
   permissions: Permission[];

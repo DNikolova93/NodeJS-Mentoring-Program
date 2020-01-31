@@ -16,7 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint -c tslint.json 'src/**/*'",
     "tsc": "tsc --init",
-    "database-seed": "sequelize-cli db:seed:all"
+    "database-seed": "sequelize-cli db:seed:all",
+    "sequelize-cli": "sequelize-cli"
   },
   "keywords": [],
   "author": "",
