@@ -1,13 +1,24 @@
 import { Sequelize } from 'sequelize';
 import uuid from 'uuid/v4';
-import { UserStatic } from '../types/user';
+import { GroupModel } from '../types/group';
+import { UserModel } from '../types/user';
 
 export default (sequelize: Sequelize, DataTypes: any) => {
-  const Group = sequelize.define('Group', {
+
+  const Group = GroupModel.init({
     id: { type: DataTypes.UUID, defaultValue: () => uuid(), allowNull: false, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
     permissions: { type: DataTypes.ARRAY(DataTypes.TEXT), allowNull: false},
-  }) as UserStatic;
+  }, {
+    sequelize,
+    tableName: 'Groups',
+  });
+
+  GroupModel.hasMany(UserModel, {
+    sourceKey: 'id',
+    foreignKey: 'userId',
+    as: 'users',
+  });
 
   return Group;
 };

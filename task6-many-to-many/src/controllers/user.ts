@@ -63,7 +63,6 @@ export default class UserController {
 
       return res.json(message);
     } catch (e) {
-      console.log(e);
       return res.status(500).send(`Fail`);
     }
   }

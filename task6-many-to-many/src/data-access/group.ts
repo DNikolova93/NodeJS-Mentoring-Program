@@ -1,13 +1,12 @@
-import { Op, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { Group, GroupStatic } from '../types/group';
-
 
 export class GroupData {
   public db: Sequelize;
   public ModelClass: GroupStatic;
   constructor(db: Sequelize, ModelClass: any) {
     this.db = db;
-    this.ModelClass = ModelClass.Group;
+    this.ModelClass = ModelClass.GroupModel;
   }
 
   async getAll(): Promise<any> {

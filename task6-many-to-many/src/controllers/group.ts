@@ -34,7 +34,6 @@ export default class GroupController {
   }
 
   async getAllGroups(req: Request, res: Response, next: NextFunction) {
-    console.log(this.data);
     try {
       const groups = await this.data.getAll();
 

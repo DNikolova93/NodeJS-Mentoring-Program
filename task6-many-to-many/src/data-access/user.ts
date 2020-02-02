@@ -6,7 +6,7 @@ export class UserData {
   public ModelClass: UserStatic;
   constructor(db: Sequelize, ModelClass: any) {
     this.db = db;
-    this.ModelClass = ModelClass.User;
+    this.ModelClass = ModelClass.UserModel;
   }
 
   async getAll(): Promise<any> {
