@@ -7,6 +7,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
 
   const Group = GroupModel.init({
     id: { type: DataTypes.UUID, defaultValue: () => uuid(), allowNull: false, primaryKey: true },
+    userId: { type: DataTypes.UUID, allowNull: false },
     name: { type: DataTypes.STRING, allowNull: false },
     permissions: { type: DataTypes.ARRAY(DataTypes.TEXT), allowNull: false},
   }, {

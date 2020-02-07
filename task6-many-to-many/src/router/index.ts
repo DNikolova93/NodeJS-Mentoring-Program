@@ -1,6 +1,6 @@
 import { Express, Request, Response } from 'express';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 
 export const attachTo = (app: Express, controllersFactory: any) => {
   app.get('/404', (req: Request, res: Response) => {
@@ -37,11 +37,11 @@ export const attachTo = (app: Express, controllersFactory: any) => {
       const newDir = path.join(dir, subDir);
       traverse(newDir);
     });
-  }
+  };
 
   traverse(__dirname);
 
   app.get('*', (req: Request, res: Response) => {
     res.redirect('/404');
   });
-}
+};

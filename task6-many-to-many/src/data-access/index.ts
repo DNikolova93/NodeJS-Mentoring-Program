@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
-import { UserData } from './user';
 import { GroupData } from './group';
+import { UserData } from './user';
 
 const init = (database: Sequelize, models: any) => {
   return Promise.resolve({

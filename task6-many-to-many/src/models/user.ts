@@ -6,6 +6,7 @@ import { UserModel } from '../types/user';
 export default (sequelize: Sequelize, DataTypes: any) => {
   const User = UserModel.init({
     id: { type: DataTypes.UUID,  defaultValue: () => uuid(), allowNull: false, primaryKey: true },
+    groupId: { type: DataTypes.UUID, allowNull: false },
     login: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, validate: { isAlphanumeric: true }, allowNull: false},
     age: { type: DataTypes.INTEGER, validate: { min: 3, max: 130 }, allowNull: false },

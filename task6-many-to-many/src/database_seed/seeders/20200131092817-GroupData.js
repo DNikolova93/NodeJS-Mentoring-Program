@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const uuidv4 = require("uuid/v4");
 const faker = require("faker");
@@ -16,15 +16,15 @@ module.exports = {
         createdAt: date,
         id: uuid,
         name: faker.name.firstName(),
-        permissions: ['DELETE', 'WRITE', 'READ', 'SHARE', 'UPLOAD_FILES'],
+        permissions: ["DELETE", "WRITE", "READ", "SHARE", "UPLOAD_FILES"],
         updatedAt: date,
       });
     }
 
-    return queryInterface.bulkInsert("Groups", data, {})
+    return queryInterface.bulkInsert("Groups", data, {});
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Groups', null, {});
-  }
+    return queryInterface.bulkDelete("Groups", null, {});
+  },
 };
