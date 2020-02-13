@@ -14,14 +14,6 @@ export default {
         allowNull: false,
         type: Sequelize.ARRAY(Sequelize.TEXT),
       },
-      userId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

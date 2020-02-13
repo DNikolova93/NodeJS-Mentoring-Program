@@ -21,6 +21,8 @@ export class GroupModel extends Model {
     users: Association<GroupModel, UserModel>;
   };
 
+  public static associate: (model: any) => void;
+
   public id!: string;
   public name!: string;
   public permissions!: string[];

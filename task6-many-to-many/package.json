@@ -17,6 +17,7 @@
     "lint": "tslint -c tslint.json 'src/**/*'",
     "tsc": "tsc --init",
     "database-seed": "sequelize-cli db:seed:all",
+    "migrations": "sequelize-cli db:migrate",
     "sequelize-cli": "sequelize-cli"
   },
   "keywords": [],

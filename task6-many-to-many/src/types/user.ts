@@ -24,9 +24,12 @@ export type UserStatic = typeof Model & (new (values?: object, options?: BuildOp
 
 export class UserModel extends Model {
 
-   public static associations: {
+  public static associations: {
     groups: Association<UserModel, GroupModel>;
   };
+
+  public static associate: (model: any) => void;
+
   public id!: string;
   public login!: string;
   public password!: string;
