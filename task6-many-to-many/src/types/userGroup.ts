@@ -8,9 +8,6 @@ export type UserGroup = {
 };
 
 export type UserGroupRequest = UserGroup & ValidatedRequestSchema;
-
-export type UserGroupStatic = typeof Model & (new (values?: object, options?: BuildOptions | undefined) => UserGroup);
-
 export class UserGroupModel extends Model {
   public static associate: (model: any) => void;
 
@@ -22,3 +19,6 @@ export class UserGroupModel extends Model {
    public readonly createdAt!: Date;
    public readonly updatedAt!: Date;
 }
+
+export type UserGroupStatic = typeof Model
+  & (new (values?: object, options?: BuildOptions | undefined) => UserGroupModel);

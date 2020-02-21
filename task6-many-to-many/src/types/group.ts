@@ -1,12 +1,12 @@
 export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
 import {
   Association,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyCountAssociationsMixin,
+  BelongsToManyCreateAssociationMixin,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyHasAssociationMixin,
   BuildOptions,
-  HasManyAddAssociationMixin,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  HasManyGetAssociationsMixin,
-  HasManyHasAssociationMixin,
   Model } from 'sequelize';
 import { UserModel } from './user';
 
@@ -14,6 +14,7 @@ export type Group = {
   readonly id: string;
   name: string;
   permissions: Permission[];
+  users: string[];
 };
 
 export class GroupModel extends Model {
@@ -26,15 +27,16 @@ export class GroupModel extends Model {
   public id!: string;
   public name!: string;
   public permissions!: string[];
+  public users!: string[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getUser!: HasManyGetAssociationsMixin<UserModel>;
-  public addUser!: HasManyAddAssociationMixin<UserModel, number>;
-  public hasUser!: HasManyHasAssociationMixin<UserModel, number>;
-  public countUsers!: HasManyCountAssociationsMixin;
-  public createUser!: HasManyCreateAssociationMixin<UserModel>;
+  public getUser!: BelongsToManyGetAssociationsMixin<UserModel>;
+  public addUser!: BelongsToManyAddAssociationMixin<string[], string>;
+  public hasUser!: BelongsToManyHasAssociationMixin<UserModel, string>;
+  public countUsers!: BelongsToManyCountAssociationsMixin;
+  public createUser!: BelongsToManyCreateAssociationMixin<UserModel>;
 }
 
-export type GroupStatic = typeof Model & (new (values?: object, options?: BuildOptions | undefined) => Group);
+export type GroupStatic = typeof Model & (new (values?: object, options?: BuildOptions | undefined) => GroupModel);

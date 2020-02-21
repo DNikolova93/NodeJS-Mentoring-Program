@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import uuid from 'uuid/v4';
-import { UserModel, UserStatic } from '../types/user';
+import { UserModel } from '../types/user';
 
 export default (sequelize: Sequelize, DataTypes: any) => {
   const User = UserModel.init({

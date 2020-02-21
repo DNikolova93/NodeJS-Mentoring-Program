@@ -14,7 +14,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
   });
 
   GroupModel.associate = (model: any) => {
-    model.GroupModel.belongsToMany(model.UserModel, {
+    GroupModel.belongsToMany(model.UserModel, {
       through: 'UserGroup',
       foreignKey: 'userId',
       as: 'users',

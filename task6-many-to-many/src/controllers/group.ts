@@ -26,7 +26,6 @@ export default class GroupController {
 
     try {
       const newGroup = await this.data.createGroup(group);
-
       return res.json(newGroup);
     } catch (e) {
       return res.status(404).send('Group information is missing or invalid');
@@ -39,6 +38,7 @@ export default class GroupController {
 
       return res.json(groups);
     } catch (e) {
+      console.log(e);
       res.status(404).send('Something went terribly wrong');
     }
   }

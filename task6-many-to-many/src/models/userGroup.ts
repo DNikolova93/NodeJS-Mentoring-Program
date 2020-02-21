@@ -19,16 +19,16 @@ export default (sequelize: Sequelize, DataTypes: any) => {
       references: {
         model: 'Groups',
         key: 'id',
+      },
     },
-    }
   }, {
     sequelize,
     tableName: 'UserGroup',
   });
 
   UserGroupModel.associate = (model: any) => {
-    model.UserGroupModel.belongsTo(model.UserModel, { foreignKey: 'userId' });
-    model.UserGroupModel.belongsTo(model.GroupModel, { foreignKey: 'groupId' });
+    UserGroupModel.belongsTo(model.UserModel, { foreignKey: 'userId' });
+    UserGroupModel.belongsTo(model.GroupModel, { foreignKey: 'groupId' });
   };
 
   return UserGroup;

@@ -1,20 +1,39 @@
 import { Op, Sequelize } from 'sequelize';
+import { GroupStatic } from '../types/group';
 import { User, UserStatic } from '../types/user';
 
 export class UserData {
   public db: Sequelize;
   public ModelClass: UserStatic;
+  public GroupClass: GroupStatic;
   constructor(db: Sequelize, ModelClass: any) {
     this.db = db;
+    this.GroupClass = ModelClass.GroupModel;
     this.ModelClass = ModelClass.UserModel;
   }
 
   async getAll(): Promise<any> {
-    return await this.ModelClass.findAll({ where: { isDeleted: false } });
+    return await this.ModelClass.findAll({ where: { isDeleted: false },
+      include: [
+        {
+          model: this.GroupClass,
+          as: 'groups',
+          through: { attributes: [] },
+        },
+      ] });
   }
 
   async get(id: string): Promise<any> {
-    return await this.ModelClass.findOne({ where: { id, isDeleted: false }});
+    return await this.ModelClass.findOne({
+      where: { id, isDeleted: false },
+         include: [
+        {
+          model: this.GroupClass,
+          as: 'groups',
+          through: { attributes: [] },
+        },
+      ]
+    });
   }
 
   async getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<any> {

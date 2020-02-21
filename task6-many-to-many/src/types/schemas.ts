@@ -8,5 +8,6 @@ export const schemas = {
   group: Joi.object().keys({
     name: Joi.string(),
     permissions: Joi.array(),
+    users: Joi.array()
   }),
 };
