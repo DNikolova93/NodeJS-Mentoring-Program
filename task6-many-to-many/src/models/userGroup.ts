@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import { UserGroupModel } from '../types/userGroup';
 
 export default (sequelize: Sequelize, DataTypes: any) => {
-  const UserGroup = UserGroupModel.init({
+  UserGroupModel.init({
     id: { type: DataTypes.UUID, defaultValue: () => uuid(), allowNull: false, primaryKey: true },
     userId: {
       type: DataTypes.UUID,
@@ -26,10 +26,5 @@ export default (sequelize: Sequelize, DataTypes: any) => {
     tableName: 'UserGroup',
   });
 
-  UserGroupModel.associate = (model: any) => {
-    UserGroupModel.belongsTo(model.UserModel, { foreignKey: 'userId' });
-    UserGroupModel.belongsTo(model.GroupModel, { foreignKey: 'groupId' });
-  };
-
-  return UserGroup;
+  return UserGroupModel;
 };

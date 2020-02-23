@@ -16,7 +16,7 @@ export type User = {
   password: string;
   age: number;
   isDeleted: boolean;
-  groups: string[]; 
+  groups: string[];
 };
 
 export type UserRequest = User & ValidatedRequestSchema;
@@ -43,7 +43,7 @@ export class UserModel extends Model {
    public readonly updatedAt!: Date;
 
    public getGroup!: BelongsToManyGetAssociationsMixin<GroupModel>;
-   public addGroup!: BelongsToManyAddAssociationMixin<GroupModel, string>;
+   public addGroup!: BelongsToManyAddAssociationMixin<string[], string>;
    public hasGroup!: BelongsToManyHasAssociationMixin<GroupModel, string>;
    public countGroups!: BelongsToManyCountAssociationsMixin;
    public createGroup!: BelongsToManyCreateAssociationMixin<GroupModel>;

@@ -65,8 +65,15 @@ export class UserData {
 
   async createUser(user: User): Promise<any> {
     user.isDeleted = false;
-    const newUser = new this.ModelClass(user);
-    return await newUser.save();
+    const { groups, ...data } = user;
+
+    const newUser = await this.ModelClass.create(data);
+
+    if (groups && groups.length > 0) {
+      newUser.addGroup(groups);
+    }
+
+    return newUser;
   }
 
   async removeUser(id: string): Promise<any> {

@@ -32,7 +32,7 @@ export class GroupModel extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getUser!: BelongsToManyGetAssociationsMixin<UserModel>;
+  public getUser!: BelongsToManyGetAssociationsMixin<string>;
   public addUser!: BelongsToManyAddAssociationMixin<string[], string>;
   public hasUser!: BelongsToManyHasAssociationMixin<UserModel, string>;
   public countUsers!: BelongsToManyCountAssociationsMixin;

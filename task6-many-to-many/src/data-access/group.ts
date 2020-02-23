@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize, Transaction } from 'sequelize';
 import { Group, GroupStatic } from '../types/group';
 import { UserStatic } from '../types/user';
 import { UserGroupStatic } from '../types/userGroup';
@@ -54,27 +54,10 @@ export class GroupData {
     const { users, ...data } = group;
     const newGroup = await this.ModelClass.create(data);
 
-    console.log(newGroup);
-
     if (users && users.length > 0) {
-      console.log('users', users);
-      users.forEach(async id => {
-        const user = await this.UserModelClass.findOne({ where: { id, isDeleted: false }});
-
-        if (!user) {
-          throw new Error(`No user was found with ID ${id}`);
-        }
-
-        const ug = {
-          groupId: newGroup.id,
-          userId: id,
-        }
-
-        // Create and save a userGroup
-        const saveUserGroup = await this.UserGroupModelClass.create(ug);
-      });
+      newGroup.addUser(users);
     }
-    // const newGroup = new this.ModelClass(group);
+
     return newGroup;
   }
 
@@ -86,5 +69,21 @@ export class GroupData {
     }
 
     return await this.ModelClass.destroy( { where: { id }});
+  }
+
+  async addUsersToGroup(groupId: string, userIds: string[], transaction: Transaction): Promise<any> {
+    // Update the group
+    const groupToUpdate = await this.ModelClass.findOne({ where: { id: groupId }, transaction});
+
+    if (!groupToUpdate) {
+      throw new Error(`No group was found with ID ${groupId}`);
+    }
+
+    await groupToUpdate.addUser(userIds, { transaction });
+
+    // everything worked as planned - commit the changes
+    await transaction.commit();
+
+    return groupToUpdate;
   }
 }

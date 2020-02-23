@@ -3,8 +3,7 @@ import uuid from 'uuid/v4';
 import { GroupModel } from '../types/group';
 
 export default (sequelize: Sequelize, DataTypes: any) => {
-
-  const Group = GroupModel.init({
+  GroupModel.init({
     id: { type: DataTypes.UUID, defaultValue: () => uuid(), allowNull: false, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
     permissions: { type: DataTypes.ARRAY(DataTypes.TEXT), allowNull: false},
@@ -14,12 +13,12 @@ export default (sequelize: Sequelize, DataTypes: any) => {
   });
 
   GroupModel.associate = (model: any) => {
-    GroupModel.belongsToMany(model.UserModel, {
-      through: 'UserGroup',
+    model.GroupModel.belongsToMany(model.UserModel, {
+      through: 'UserGroupModel',
       foreignKey: 'userId',
       as: 'users',
     });
   };
 
-  return Group;
+  return GroupModel;
 };

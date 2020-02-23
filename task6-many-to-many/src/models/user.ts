@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import { UserModel } from '../types/user';
 
 export default (sequelize: Sequelize, DataTypes: any) => {
-  const User = UserModel.init({
+  UserModel.init({
     id: { type: DataTypes.UUID,  defaultValue: () => uuid(), allowNull: false, primaryKey: true },
     login: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, validate: { isAlphanumeric: true }, allowNull: false},
@@ -13,16 +13,15 @@ export default (sequelize: Sequelize, DataTypes: any) => {
   {
     sequelize,
     tableName: 'Users',
-
   });
 
   UserModel.associate = (model: any) => {
     model.UserModel.belongsToMany(model.GroupModel, {
-      through: 'UserGroup',
+      through: 'UserGroupModel',
       foreignKey: 'groupId',
       as: 'groups',
     });
   };
 
-  return User;
+  return UserModel;
 };

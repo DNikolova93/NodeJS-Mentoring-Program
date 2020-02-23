@@ -37,5 +37,10 @@ export const attach = (
       controller.updateGroup(req, res, next);
   });
 
+  router.route('/addUsers/:id')
+    .put((req: Request, res: Response, next: NextFunction) => {
+      controller.addUsersToGroup(req, res, next);
+  });
+
   app.use('/api/groups', router);
 };
