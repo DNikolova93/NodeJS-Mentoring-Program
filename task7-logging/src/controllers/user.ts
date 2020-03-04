@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { timer } from '../utils';
 
 export default class UserController {
   public data: any;
@@ -6,6 +7,7 @@ export default class UserController {
     this.data = data.user;
   }
 
+  @timer
   async getUser(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
 
@@ -17,10 +19,13 @@ export default class UserController {
       }
       return res.json(user);
     } catch (e) {
-      return res.status(404).send(`A user with the specified ID ${userId} was not found`);
+      const msg = `A user with the specified ID ${userId} was not found`;
+      const error = { message: msg, code: 500, method: req.method, params: req.params };
+      return next(new Error(JSON.stringify(error)));
     }
   }
 
+  @timer
   async create(req: Request, res: Response, next: NextFunction) {
     const user = req.body;
 
@@ -33,6 +38,7 @@ export default class UserController {
     }
   }
 
+  @timer
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const users = await this.data.getAll();
@@ -43,6 +49,7 @@ export default class UserController {
     }
   }
 
+  @timer
   async getSuggestUsers(req: Request, res: Response, next: NextFunction) {
     const { loginSubstring, limit } = req.query;
 
@@ -55,6 +62,7 @@ export default class UserController {
     }
   }
 
+  @timer
   async removeUser(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
 
@@ -67,6 +75,7 @@ export default class UserController {
     }
   }
 
+  @timer
   async updateUser(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
     const data = req.body;

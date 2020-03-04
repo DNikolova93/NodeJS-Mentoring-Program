@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Transaction } from 'sequelize';
+import { timer } from '../utils';
 
 export default class GroupController {
   public data: any;
@@ -7,6 +8,7 @@ export default class GroupController {
     this.data = data.group;
   }
 
+  @timer
   async getGroup(req: Request, res: Response, next: NextFunction) {
     const groupId = req.params.id;
 
@@ -18,10 +20,13 @@ export default class GroupController {
       }
       return res.json(group);
     } catch (e) {
-      return res.status(404).send(`A group with the specified ID ${groupId} was not found`);
+      const msg = `A group with the specified ID ${groupId} was not found`;
+      const error = { message: msg, code: 500, method: req.method, params: req.params };
+      return next(new Error(JSON.stringify(error)));
     }
   }
 
+  @timer
   async create(req: Request, res: Response, next: NextFunction) {
     const group = req.body;
 
@@ -33,6 +38,7 @@ export default class GroupController {
     }
   }
 
+  @timer
   async getAllGroups(req: Request, res: Response, next: NextFunction) {
     try {
       const groups = await this.data.getAll();
@@ -43,6 +49,7 @@ export default class GroupController {
     }
   }
 
+  @timer
   async deleteGroup(req: Request, res: Response, next: NextFunction) {
     const groupId = req.params.id;
 
@@ -55,6 +62,7 @@ export default class GroupController {
     }
   }
 
+  @timer
   async updateGroup(req: Request, res: Response, next: NextFunction) {
     const groupId = req.params.id;
     const data = req.body;
@@ -68,6 +76,7 @@ export default class GroupController {
     }
   }
 
+  @timer
   async addUsersToGroup(req: Request, res: Response, next: NextFunction) {
     const groupId = req.params.id;
     const { users } = req.body;
@@ -83,7 +92,6 @@ export default class GroupController {
       if (transaction) {
         await transaction.rollback();
       }
-
 
       if (e && e.message === `No group was found with ID ${groupId}`) {
         res.status(404).send(e.message);

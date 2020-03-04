@@ -24,7 +24,7 @@ const run = async () => {
   const models = await modelsInit(sequelize);
   const dataAccess = await dataAccessInit(sequelize, models);
 
-  const controllersFactory = new ControllersFactory(controllers, dataAccess, logger);
+  const controllersFactory = new ControllersFactory(controllers, dataAccess, loggerWinston);
 
   const app = await appInit(controllersFactory, requestLogger, loggerWinston);
 

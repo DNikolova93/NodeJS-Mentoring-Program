@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "allowJs": true,
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */

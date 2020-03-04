@@ -10,7 +10,6 @@ const errorConfigApp = (
   const controller = controllersFactory.getErrorController();
 
   process.on('uncaughtException', (err: Error) => {
-    console.log('err', err);
     loggerWinston.error(err.message);
     process.exit(-1);
   });

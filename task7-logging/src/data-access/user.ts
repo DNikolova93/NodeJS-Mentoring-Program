@@ -32,7 +32,7 @@ export class UserData {
           as: 'groups',
           through: { attributes: [] },
         },
-      ]
+      ],
     });
   }
 
@@ -40,6 +40,10 @@ export class UserData {
     const items = await this.getAll();
     if (!limit || limit < 0 || limit > items.length) {
       limit = items.length;
+    }
+
+    if (!items) {
+      throw new Error(`No users was found`);
     }
 
     return await this.ModelClass.findAll({ limit,
