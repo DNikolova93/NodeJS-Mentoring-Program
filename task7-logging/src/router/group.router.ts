@@ -31,7 +31,7 @@ export const attach = (
     .delete((req: Request, res: Response, next: NextFunction) => {
       controller.deleteGroup(req, res, next);
   });
-  
+
   router.route('/update/:id')
     .put(validator(schemas.group, RequestType.Body), (req: Request, res: Response, next: NextFunction) => {
       controller.updateGroup(req, res, next);
