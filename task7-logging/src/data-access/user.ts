@@ -42,6 +42,10 @@ export class UserData {
       limit = items.length;
     }
 
+    if (!items) {
+      throw new Error(`No users was found`);
+    }
+
     return await this.ModelClass.findAll({ limit,
       where: {
         isDeleted: false,

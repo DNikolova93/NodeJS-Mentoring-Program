@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
+import { Logger } from 'winston';
 
 export default class ErrorController {
-  public logger: any;
+  public logger: Logger;
   constructor(logger: any) {
     this.logger = logger;
   }
@@ -12,7 +13,7 @@ export default class ErrorController {
     try {
       error = JSON.parse(err.message);
     } catch (e) {
-      this.logger.log(err.message);
+      this.logger.error(err);
 
       return res.send(err.message);
     }
@@ -20,9 +21,14 @@ export default class ErrorController {
     const message = error.message;
     const code = +error.code;
 
-    this.logger.log(message);
+    this.logger.error(message);
 
     if (code === 401) {
+      return res.status(code).send(message);
+    }
+
+    if (code === 404) {
+      this.logger.error(err);
       return res.status(code).send(message);
     }
 
