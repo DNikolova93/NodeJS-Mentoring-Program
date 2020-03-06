@@ -84,7 +84,6 @@ export default class GroupController {
         await transaction.rollback();
       }
 
-
       if (e && e.message === `No group was found with ID ${groupId}`) {
         res.status(404).send(e.message);
       }

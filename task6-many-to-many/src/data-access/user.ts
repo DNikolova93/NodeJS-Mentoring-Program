@@ -32,7 +32,7 @@ export class UserData {
           as: 'groups',
           through: { attributes: [] },
         },
-      ]
+      ],
     });
   }
 

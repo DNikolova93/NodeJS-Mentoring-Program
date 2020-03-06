@@ -24,8 +24,4 @@ export class Logger {
       return;
     }
   }
-
-  private recordsTime() { 
-    
-  }
 }
