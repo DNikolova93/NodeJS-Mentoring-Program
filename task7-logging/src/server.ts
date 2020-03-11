@@ -5,9 +5,8 @@ import controllers from './controllers';
 import { init as dataAccessInit } from './data-access';
 import { init as databaseInit } from './database';
 import { init as modelsInit } from './models';
-import { ControllersFactory, Logger, LoggerWinston, RequestLogger } from './utils';
+import { ControllersFactory, LoggerWinston, RequestLogger } from './utils';
 
-const logger = new Logger(CONFIG);
 const loggerWinston = LoggerWinston(CONFIG);
 const requestLogger = RequestLogger(loggerWinston);
 
@@ -24,9 +23,15 @@ const run = async () => {
   const models = await modelsInit(sequelize);
   const dataAccess = await dataAccessInit(sequelize, models);
 
-  const controllersFactory = new ControllersFactory(controllers, dataAccess, loggerWinston);
+  const controllersFactory = new ControllersFactory(controllers, dataAccess, loggerWinston, CONFIG);
 
-  const app = await appInit(controllersFactory, requestLogger, loggerWinston);
+  const app = await appInit(
+    controllersFactory,
+    requestLogger,
+    loggerWinston,
+    dataAccess,
+    CONFIG,
+  );
 
   app.listen(CONFIG.port, () => loggerWinston.info('Server started and listening on port ' + CONFIG.port));
 };

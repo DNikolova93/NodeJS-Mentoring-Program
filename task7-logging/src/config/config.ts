@@ -6,6 +6,9 @@ const config = {
     port: process.env.PORT || 3001,
     env: '',
     logging: false,
+    jwt: {
+      secret: 'JWT_SECRET',
+    },
 };
 
 process.env.NODE_ENV = process.env.NODE_ENV || config.dev;

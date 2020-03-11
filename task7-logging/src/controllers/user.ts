@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import sha256 from 'sha256';
+import { User } from '../types/user';
 import { timer } from '../utils';
 
 export default class UserController {
@@ -27,7 +29,8 @@ export default class UserController {
 
   @timer
   async create(req: Request, res: Response, next: NextFunction) {
-    const user = req.body;
+    const user = req.body as User;
+    user.password = sha256(user.password);
 
     try {
       const newUser = await this.data.createUser(user);
