@@ -1,5 +1,6 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
+import passport from 'passport';
 import validatorConfigApp from '../app_config/validatorConfig';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';
@@ -42,5 +43,5 @@ export const attach = (
       controller.addUsersToGroup(req, res, next);
   });
 
-  app.use('/api/groups', router);
+  app.use('/api/groups', passport.authenticate('jwt', { session: false }), router);
 };

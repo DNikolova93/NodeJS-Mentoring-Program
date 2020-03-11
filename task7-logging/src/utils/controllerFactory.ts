@@ -24,6 +24,6 @@ export class ControllersFactory {
   }
 
   getAuthController() {
-    return new this.controllers.ErrorController(this.data, this.config);
+    return new this.controllers.AuthController(this.data, this.config);
   }
 }

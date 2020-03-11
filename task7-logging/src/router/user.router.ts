@@ -3,6 +3,7 @@ import { NextFunction } from 'express-serve-static-core';
 import validatorConfigApp from '../app_config/validatorConfig';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';
+import passport from 'passport';
 
 const router = Router();
 
@@ -41,5 +42,5 @@ export const attach = (
       controller.updateUser(req, res, next);
   });
 
-  app.use('/api/users', router);
+  app.use('/api/users', passport.authenticate('jwt', { session: false }), router);
 };

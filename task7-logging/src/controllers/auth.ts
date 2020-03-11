@@ -14,22 +14,23 @@ export default class AuthController {
 
   @timer
   async login(req: Request, res: Response, next: NextFunction) {
-    passport.authenticate('local',
-      { session: false },
-      (err: Error, user: User, info: { message: string }) => {
-        console.log('auth', user);
-        if (err || !user) {
-          return res.status(400).json({ message: 'Something is not right', user });
-        }
+    console.log(req);
+    // passport.authenticate('local',
+    //   { session: false },
+    //   (err: Error, user: User, info: { message: string }) => {
+    //     console.log('auth', user);
+    //     if (err || !user) {
+    //       return res.status(400).json({ message: info ? info.message : 'Login failed', user });
+    //     }
 
-        req.login(user, { session: false }, (error: Error) => {
-          if (error) {
-            res.send(error);
-          }
-        });
+    //     req.login(user, { session: false }, (error: Error) => {
+    //       if (error) {
+    //         res.send(error);
+    //       }
+    //     });
 
-        const token = jwt.sign(user, this.config.jwt.secret);
-        return res.json({ user, token });
-    });
+    //     const token = jwt.sign(user, this.config.jwt.secret);
+    //     return res.json({ user, token });
+    // })(req, res);
   }
 }

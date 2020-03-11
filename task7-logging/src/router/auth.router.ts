@@ -1,8 +1,5 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
-import validatorConfigApp from '../app_config/validatorConfig';
-import { RequestType } from '../types/requestType';
-import { schemas } from '../types/schemas';
 
 const router = Router();
 
@@ -13,6 +10,7 @@ export const attach = (
 
   router.route('/login')
     .post((req: Request, res: Response, next: NextFunction) => {
+      console.log('req', req);
       controller.login(req, res, next);
   });
 
