@@ -1,9 +1,10 @@
 import { Express, Request, Response, Router } from 'express';
 import { NextFunction } from 'express-serve-static-core';
+import passport from 'passport';
 import validatorConfigApp from '../app_config/validatorConfig';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';
-import passport from 'passport';
+import checkToken from '../utils/checkToken';
 
 const router = Router();
 
@@ -34,7 +35,6 @@ export const attach = (
 
   router.route('/delete/:id')
     .delete((req: Request, res: Response, next: NextFunction) => {
-      controller.removeUser(req, res, next);
   });
 
   router.route('/update/:id')
@@ -42,5 +42,6 @@ export const attach = (
       controller.updateUser(req, res, next);
   });
 
-  app.use('/api/users', passport.authenticate('jwt', { session: false }), router);
+  app.use('/api/users', checkToken,
+    passport.authenticate('jwt', { session: false, failureRedirect: '/api/login' } ), router);
 };

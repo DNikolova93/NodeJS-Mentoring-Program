@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import passport = require('passport');
+import sha256 from 'sha256';
 import { User } from '../types/user';
 import { timer } from '../utils';
-
 export default class AuthController {
   public data: any;
   public config: any;
@@ -14,23 +13,41 @@ export default class AuthController {
 
   @timer
   async login(req: Request, res: Response, next: NextFunction) {
-    console.log(req);
-    // passport.authenticate('local',
-    //   { session: false },
-    //   (err: Error, user: User, info: { message: string }) => {
-    //     console.log('auth', user);
-    //     if (err || !user) {
-    //       return res.status(400).json({ message: info ? info.message : 'Login failed', user });
-    //     }
+    const { username, password } = req.body;
 
-    //     req.login(user, { session: false }, (error: Error) => {
-    //       if (error) {
-    //         res.send(error);
-    //       }
-    //     });
+    try {
+      const user = await this.data.getByUsername(username);
 
-    //     const token = jwt.sign(user, this.config.jwt.secret);
-    //     return res.json({ user, token });
-    // })(req, res);
+      if (!user) {
+        return res.status(401).send(`Couldn't find user!`);
+      }
+      const isValid = user.password === sha256(password);
+
+      if (isValid) {
+        const token = this.issueJWT(user);
+
+        return res.status(200).json({ token, expiresIn: token.expires });
+      } else {
+        return res.status(401).send(`You entered the wrong password!`);
+      }
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  private issueJWT(user: User) {
+    const { id } = user;
+    const expiresIn = '1d';
+
+    const payload = {
+      sub: id,
+      iat: Date.now(),
+    };
+
+    const signedToken = jwt.sign(payload, this.config.jwt.secret, { expiresIn });
+    return {
+      token: 'Bearer ' + signedToken,
+      expires: expiresIn,
+    };
   }
 }

@@ -10,7 +10,6 @@ export const attach = (
 
   router.route('/login')
     .post((req: Request, res: Response, next: NextFunction) => {
-      console.log('req', req);
       controller.login(req, res, next);
   });
 

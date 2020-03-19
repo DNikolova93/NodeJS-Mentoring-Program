@@ -4,6 +4,7 @@ import passport from 'passport';
 import validatorConfigApp from '../app_config/validatorConfig';
 import { RequestType } from '../types/requestType';
 import { schemas } from '../types/schemas';
+import checkToken from '../utils/checkToken';
 
 const router = Router();
 
@@ -43,5 +44,5 @@ export const attach = (
       controller.addUsersToGroup(req, res, next);
   });
 
-  app.use('/api/groups', passport.authenticate('jwt', { session: false }), router);
+  app.use('/api/groups', checkToken, passport.authenticate('jwt', { session: false }), router);
 };

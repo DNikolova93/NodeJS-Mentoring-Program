@@ -36,6 +36,12 @@ export class UserData {
     });
   }
 
+  async getByUsername(login: string): Promise<any> {
+    return this.ModelClass.findOne({
+      where: { login, isDeleted: false },
+    });
+  }
+
   async getAutoSuggestUsers(loginSubstring: string, limit: number): Promise<any> {
     const items = await this.getAll();
     if (!limit || limit < 0 || limit > items.length) {
