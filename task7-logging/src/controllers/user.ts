@@ -16,9 +16,6 @@ export default class UserController {
     try {
       const user = await this.data.get(userId);
 
-      if (!user) {
-        return res.status(404).send(`A user with the specified ID ${userId} was not found`);
-      }
       return res.json(user);
     } catch (e) {
       const msg = `A user with the specified ID ${userId} was not found`;
@@ -30,10 +27,10 @@ export default class UserController {
   @timer
   async create(req: Request, res: Response, next: NextFunction) {
     const user = req.body as User;
-    user.password = sha256(user.password);
+    const password = sha256(req.body.password);
 
     try {
-      const newUser = await this.data.createUser(user);
+      const newUser = await this.data.createUser({ ...user, password});
 
       return res.json(newUser);
     } catch (e) {
@@ -81,7 +78,12 @@ export default class UserController {
   @timer
   async updateUser(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
-    const data = req.body;
+    let data = req.body;
+
+    if (data && data.password) {
+      const updatedPassword = sha256(data.password);
+      data = { ...data, password: updatedPassword };
+    }
 
     try {
       const user = await this.data.updateById(userId, data);

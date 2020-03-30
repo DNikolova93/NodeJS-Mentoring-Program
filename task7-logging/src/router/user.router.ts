@@ -35,6 +35,7 @@ export const attach = (
 
   router.route('/delete/:id')
     .delete((req: Request, res: Response, next: NextFunction) => {
+      controller.removeUser(req, res, next);
   });
 
   router.route('/update/:id')

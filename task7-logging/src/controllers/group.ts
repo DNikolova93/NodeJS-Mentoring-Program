@@ -15,9 +15,6 @@ export default class GroupController {
     try {
       const group = await this.data.get(groupId);
 
-      if (!group) {
-        return res.status(404).send(`A group with the specified ID ${groupId} was not found`);
-      }
       return res.json(group);
     } catch (e) {
       const msg = `A group with the specified ID ${groupId} was not found`;
@@ -84,9 +81,7 @@ export default class GroupController {
 
     try {
       transaction = await this.data.db.transaction();
-
       const updatedGroup = await this.data.addUsersToGroup(groupId, users, transaction);
-
       return res.json(updatedGroup);
     } catch (e) {
       if (transaction) {
