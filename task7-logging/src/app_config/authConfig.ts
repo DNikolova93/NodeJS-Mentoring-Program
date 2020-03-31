@@ -2,10 +2,10 @@ import { Express } from 'express';
 import passport from 'passport';
 import { ExtractJwt, Strategy as JWTStrategy, StrategyOptions } from 'passport-jwt';
 
-const authConfig = (app: Express, data: any, config: any) => {
+const authConfig = (app: Express, data: any) => {
   const jwtOptions: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: config.jwt.secret,
+    secretOrKey: process.env.JWT_SECRET || '',
   };
 
   app.use(passport.initialize());

@@ -44,7 +44,8 @@ export default class AuthController {
       iat: Date.now(),
     };
 
-    const signedToken = jwt.sign(payload, this.config.jwt.secret, { expiresIn });
+    const jwtSecret: string = process.env.JWT_SECRET || '';
+    const signedToken = jwt.sign(payload, jwtSecret, { expiresIn });
     return {
       token: 'Bearer ' + signedToken,
       expires: expiresIn,

@@ -1,4 +1,18 @@
+import * as dotenv from 'dotenv';
 import { merge } from 'lodash';
+
+let path: string;
+dotenv.config();
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    path = `${__dirname}/environments/.env.production`;
+    break;
+  default:
+    path = `${__dirname}/environments/.env.development`;
+}
+
+dotenv.config({ path });
 
 const config = {
     dev: 'development',
@@ -6,9 +20,6 @@ const config = {
     port: process.env.PORT || 3001,
     env: '',
     logging: false,
-    jwt: {
-      secret: 'JWT_SECRET',
-    },
 };
 
 process.env.NODE_ENV = process.env.NODE_ENV || config.dev;

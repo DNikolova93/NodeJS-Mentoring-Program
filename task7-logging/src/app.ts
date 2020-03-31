@@ -17,7 +17,7 @@ export const init = async (
   const server = http.createServer(app);
 
   configs.baseConfig(app, requestLogger);
-  configs.authConfig(app, data, config);
+  configs.authConfig(app, data);
 
   // routers
   attachTo(app, controllerFactory);

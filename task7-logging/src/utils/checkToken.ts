@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-import config from '../config';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   let token = req.headers['authorization'];
@@ -9,7 +8,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
 
   if (token) {
-    jwt.verify(token, config.jwt.secret, (err: VerifyErrors, decoded: object) => {
+    const jwtSecret: string = process.env.JWT_SECRET || '';
+    jwt.verify(token, jwtSecret, (err: VerifyErrors, decoded: object) => {
       if (err) {
         return res.status(403).json({
           success: false,
