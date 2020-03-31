@@ -3,6 +3,7 @@
 This codebase includes the following:
 
 ```
+|─ tests // contains unit tests
 ├── app_config // contains Express middleware functions and configs.
 ├── config     // contains config object to manage different environments and sequilize configuration 
 ├── controllers
@@ -45,6 +46,14 @@ In order to run the Project in dev mode, execute the following command:
 
 ```
 npm run start
+```
+
+#### Test
+
+In order to run test, execute the following command:
+
+```
+npm run test
 ```
 
 #### Building
